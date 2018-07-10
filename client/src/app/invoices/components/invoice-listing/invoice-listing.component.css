@@ -1,0 +1,7 @@
+table {
+  width: 100%;
+}
+.pull-right {
+  right: 50px;
+  position: absolute;
+}

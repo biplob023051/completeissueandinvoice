@@ -1,0 +1,42 @@
+<mat-card>
+  <h3>Create Invoice</h3>
+  {{ this.invoiceForm.value | json }}
+  <form class="form-container" [formGroup]="invoiceForm" novalidate (ngSubmit)="addInvoice()">
+    <mat-form-field>
+      <input matInput placeholder="Item" formControlName="item">
+      <mat-error *ngIf="invoiceForm.controls['item'].invalid && invoiceForm.controls['item'].touched">Item is required</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput
+      [matDatepicker]="date"
+      placeholder="Choose a invoice date"
+      formControlName="date">
+      <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+      <mat-datepicker #date></mat-datepicker>
+      <mat-error *ngIf="invoiceForm.controls['date'].invalid && invoiceForm.controls['date'].touched">Invoice date is required</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput
+      [matDatepicker]="due"
+      placeholder="Choose a due date"
+      formControlName="due">
+      <mat-datepicker-toggle matSuffix [for]="due"></mat-datepicker-toggle>
+      <mat-datepicker #due></mat-datepicker>
+      <mat-error *ngIf="invoiceForm.controls['due'].invalid && invoiceForm.controls['due'].touched">Due date is required</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="Quantity" type="number" formControlName="qty">
+        <mat-error *ngIf="invoiceForm.controls['qty'].invalid && invoiceForm.controls['qty'].touched">Quantity is required</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="Rate" type="number" formControlName="rate">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="Tax" type="number" formControlName="tax">
+    </mat-form-field>
+    <div>
+      <button mat-raised-button [disabled]="!invoiceForm.valid" color="accent" type="submit">Save</button>
+      <button mat-raised-button type="reset">Reset</button>
+    </div>
+  </form>
+</mat-card>
