@@ -1,8 +1,8 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { InvoiceService } from '../../services/invoice.service';
-import { MatSnackBar } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
+import { SnackbarService } from '../../../shared/snackbar.service';
 
 @Component({
   selector: 'app-invoice-form',
@@ -15,9 +15,9 @@ export class InvoiceFormComponent implements OnInit, OnChanges {
   constructor(
     private fb: FormBuilder,
     private invoiceService: InvoiceService,
-    public snackBar: MatSnackBar,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private snackbarService: SnackbarService
   ) { }
 
   ngOnInit() {
@@ -39,7 +39,7 @@ export class InvoiceFormComponent implements OnInit, OnChanges {
       .subscribe(invoice => {
         this.invoice = invoice;
         this.invoiceForm.patchValue(this.invoice);
-      }, err => this.errorHandler(err, 'Unable to fetch invoice'));
+      }, err => this.snackbarService.errorMessage('Unable to fetch invoice'));
     });
   }
 
@@ -58,34 +58,23 @@ export class InvoiceFormComponent implements OnInit, OnChanges {
     if (this.invoice) {
       this.invoiceService.updateInvoice(this.invoice._id, this.invoiceForm.value)
        .subscribe(invoice => {
-         console.log(invoice);
-         this.snackBar.open('Successfully updated', 'Success', {
-           duration: 2000
-         });
+         this.snackbarService.successMessage('Successfully updated');
          this.router.navigate(['dashboard', 'invoices']);
-       }, err => this.errorHandler(err, 'Update failed'));
+       }, err => this.snackbarService.errorMessage('Update failed'));
     } else {
       this.invoiceForm.value.rate = this.invoiceForm.value.rate ? this.invoiceForm.value.rate : 0;
       this.invoiceForm.value.tax = this.invoiceForm.value.rate ? this.invoiceForm.value.tax : 0;
       this.invoiceService.createInvoice(this.invoiceForm.value)
         .subscribe(invoice => {
           this.rebuildForm();
-          this.snackBar.open('Successfully added', 'Success', {
-            duration: 2000
-          });
+          this.snackbarService.successMessage('Successfully added');
           this.router.navigate(['dashboard', 'invoices']);
-        }, err => this.errorHandler(err, 'Invoice add failed'));
+        }, err => this.snackbarService.errorMessage('Invoice add failed'));
     }
   }
 
   rebuildForm() {
     this.invoiceForm.reset();
-  }
-
-  private errorHandler(error, message) {
-    this.snackBar.open(message, 'Error', {
-      duration: 2000
-    });
   }
 
 }

@@ -1,3 +1,43 @@
-<p>
-  issue-form works!
-</p>
+<mat-card>
+  <form class="form-container" [formGroup]="issueForm" (ngSubmit)="addIssue()">
+    <mat-form-field>
+      <input matInput placeholder="Title" formControlName="title">
+      <mat-error *ngIf="issueForm.controls['title'].invalid && issueForm.controls['title'].touched">Title is required</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Responsible" formControlName="responsible">
+    </mat-form-field>
+    <mat-form-field>
+      <textarea matInput placeholder="Description" formControlName="description"></textarea>
+      <mat-error *ngIf="issueForm.controls['description'].invalid && issueForm.controls['description'].touched">Responsible is required</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Severity" formControlName="severity">
+        <mat-option *ngFor="let severityOption of severityOptions" [value]="severityOption.value">
+          {{ severityOption.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="issueForm.controls['severity'].invalid && issueForm.controls['severity'].touched">Severity is required</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Status" formControlName="status">
+        <mat-option *ngFor="let statusOption of statusOptions" [value]="statusOption.value">
+          {{ statusOption.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput
+      [matDatepicker]="deadline"
+      placeholder="Choose a deadline"
+      formControlName="deadline"
+      >
+      <mat-datepicker-toggle matSuffix [for]="deadline"></mat-datepicker-toggle>
+      <mat-datepicker #deadline></mat-datepicker>
+    </mat-form-field>
+    <div>
+      <button mat-raised-button [disabled]="!issueForm.valid" color="accent" type="submit">Save</button>
+      <button mat-raised-button type="reset">Reset</button>
+    </div>
+  </form>
+</mat-card>

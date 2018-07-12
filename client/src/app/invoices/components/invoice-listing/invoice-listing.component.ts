@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { InvoiceService } from '../../services/invoice.service';
 import { Invoice } from '../../models/invoice';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
 import { remove } from 'lodash';
+import { SnackbarService } from '../../../shared/snackbar.service';
 
 @Component({
   selector: 'app-invoice-listing',
@@ -15,7 +15,7 @@ export class InvoiceListingComponent implements OnInit {
   constructor(
     private invoiceService: InvoiceService,
     private router: Router,
-    public snackBar: MatSnackBar
+    private snackbarService: SnackbarService
   ) { }
   displayedColumns: string[] = ['item', 'date', 'due', 'qty', 'rate', 'tax', 'action'];
   dataSource: Invoice[] = [];
@@ -23,7 +23,7 @@ export class InvoiceListingComponent implements OnInit {
     this.invoiceService.getInvoices()
     .subscribe(data => {
       this.dataSource = data;
-    }, error => this.errorHandler(error, 'Unable to fetch invoices'));
+    }, error => this.snackbarService.errorMessage('Unable to fetch invoices'));
   }
 
   addInvoice() {
@@ -37,20 +37,12 @@ export class InvoiceListingComponent implements OnInit {
         return item._id === invoice._id;
       });
       this.dataSource = [...this.dataSource];
-      this.snackBar.open('Successfully Deleted', 'Success', {
-        duration: 2000
-      });
-    }, err => this.errorHandler(err, 'Unable to delete'));
+      this.snackbarService.successMessage('Successfully Deleted');
+    }, err => this.snackbarService.errorMessage('Unable to delete'));
   }
 
   editInvoice(id) {
     this.router.navigate(['dashboard', 'invoices', id]);
-  }
-
-  private errorHandler(error, message) {
-    this.snackBar.open(message, 'Error', {
-      duration: 2000
-    });
   }
 
 }
