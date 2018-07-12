@@ -1,0 +1,43 @@
+<div class="mat-table">
+  <!-- <div class="mat-header-row">
+    <div class="mat-header-cell">One</div>
+    <div class="mat-header-cell">Two</div>
+  </div> -->
+  <h3 class="text-center">Issue Details</h3>
+  <div class="mat-row">
+    <div class="mat-cell font-bold">Title</div>
+    <div class="mat-cell">{{ issue.title }}</div>
+  </div>
+  <div class="mat-row">
+    <div class="mat-cell font-bold">Description</div>
+    <div class="mat-cell">{{ issue.description }}</div>
+  </div>
+  <div class="mat-row">
+    <div class="mat-cell font-bold">Responsible</div>
+    <div class="mat-cell">{{ issue.responsible }}</div>
+  </div>
+  <div class="mat-row">
+    <div class="mat-cell font-bold">Status</div>
+    <div class="mat-cell">{{ issue.status }}</div>
+  </div>
+  <div class="mat-row">
+    <div class="mat-cell font-bold">Severity</div>
+    <div class="mat-cell">{{ issue.severity }}</div>
+  </div>
+  <div class="mat-row">
+    <div class="mat-cell font-bold">Deadline</div>
+    <div class="mat-cell">{{ issue.deadline | date }}</div>
+  </div>
+  <div class="mat-row">
+    <div class="mat-cell font-bold">Created</div>
+    <div class="mat-cell">{{ issue.created | date }}</div>
+  </div>
+  <div class="mat-row">
+    <div class="mat-cell font-bold">Modified</div>
+    <div class="mat-cell">{{ issue.modified | date }}</div>
+  </div>
+  <div class="mat-row">
+    <div class="mat-cell font-bold">Created By</div>
+    <div class="mat-cell">{{ issue.createdBy }}</div>
+  </div>
+</div>

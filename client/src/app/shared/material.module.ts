@@ -13,7 +13,8 @@ import {
   MatInputModule,
   MatDatepickerModule,
   MatNativeDateModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatDialogModule
 } from '@angular/material';
 const matModules = [
   MatButtonModule,
@@ -28,7 +29,8 @@ const matModules = [
   MatInputModule,
   MatDatepickerModule,
   MatNativeDateModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatDialogModule
 ];
 @NgModule({
   imports: [

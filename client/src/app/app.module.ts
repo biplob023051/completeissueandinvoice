@@ -5,10 +5,12 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './shared/material.module';
 import { AppRoutingModule } from './app-routing.module';
+import { IssueViewModalComponent } from './issues/components/issue-view-modal/issue-view-modal.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    IssueViewModalComponent
   ],
   imports: [
     BrowserModule,
@@ -17,6 +19,7 @@ import { AppRoutingModule } from './app-routing.module';
     AppRoutingModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [IssueViewModalComponent]
 })
 export class AppModule { }

@@ -9,11 +9,8 @@ export class ModalService {
 
   constructor(private dialog: MatDialog) { }
 
-  public invoke(modalComponent: any, modalData: any): Observable<any> {
-    const dialogRef = this.dialog.open(modalComponent, {
-      width: '250px',
-      data: modalData
-    });
+  public invoke(modalComponent: any, modalSettings: any): Observable<any> {
+    const dialogRef = this.dialog.open(modalComponent, modalSettings);
     return dialogRef.afterClosed();
   }
 }

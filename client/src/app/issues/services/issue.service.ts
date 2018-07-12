@@ -12,4 +12,8 @@ export class IssueService {
   getIssues(): Observable<Issue[]> {
     return this.httpClient.get<Issue[]>(`${BASE_URL}/issues`);
   }
+
+  getAnIssue(id: string): Observable<Issue> {
+    return this.httpClient.get<Issue>(`${BASE_URL}/issues/${id}`);
+  }
 }
