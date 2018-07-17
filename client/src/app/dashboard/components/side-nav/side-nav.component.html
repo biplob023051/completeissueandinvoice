@@ -3,7 +3,7 @@
     [opened]="!isScreenSmall()"
     [mode]="isScreenSmall() ? 'over' : 'side'"
     class="mat-elevation-z10" #sidenav>
-      <mat-toolbar color="accent"><mat-icon>dashboard</mat-icon> Dashboard</mat-toolbar>
+      <mat-toolbar color="accent" routerLink="/dashboard" class="cusor-pointer"><mat-icon>dashboard</mat-icon> Dashboard</mat-toolbar>
       <mat-list role="list">
         <mat-nav-list>
           <a mat-list-item [routerLink]="link.url" *ngFor="let link of links"> {{ link.name }} </a>

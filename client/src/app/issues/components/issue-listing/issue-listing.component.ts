@@ -1,18 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Issue } from '../../models/issue';
 import { IssueService } from '../../services/issue.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { IssueViewModalComponent } from '../issue-view-modal/issue-view-modal.component';
 import { ModalService } from '../../../shared/modal.service';
 import { SnackbarService } from '../../../shared/snackbar.service';
+import { IssueDataSource } from '../../services/issue.datasource';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+
+import { fromEvent, merge } from 'rxjs';
+import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-issue-listing',
   templateUrl: './issue-listing.component.html',
   styleUrls: ['./issue-listing.component.css']
 })
-export class IssueListingComponent implements OnInit {
-
+export class IssueListingComponent implements OnInit, AfterViewInit {
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('input') input: ElementRef;
   constructor(
     private issueService: IssueService,
     private router: Router,
@@ -21,12 +28,42 @@ export class IssueListingComponent implements OnInit {
   ) { }
   displayedColumns: string[] = ['title', 'responsible', 'severity',
   'status', 'deadline', 'created', 'action'];
-  dataSource: Issue[] = [];
+  dataSource: IssueDataSource;
+  allIssues: IssueDataSource;
+  totalCount = 0;
+  pageSize = 0;
   ngOnInit() {
-    this.issueService.getIssues()
-    .subscribe(issues => {
-      this.dataSource = issues;
-    }, error => this.snackbarService.errorMessage('Failed to load issues'));
+    this.dataSource = new IssueDataSource(this.issueService);
+    this.dataSource.loadIssues('', 'asc', '', 0, 5);
+    this.dataSource.issueCount$.subscribe(issueCount => {
+      this.totalCount = issueCount;
+    });
+    this.dataSource.$pageSize.subscribe(pageSize => {
+      this.pageSize = pageSize;
+    });
+  }
+
+  ngAfterViewInit() {
+    this.sort.sortChange.subscribe(() => {
+      this.paginator.pageIndex = 0;
+    });
+
+    fromEvent(this.input.nativeElement, 'keyup')
+      .pipe(
+        debounceTime(150),
+        distinctUntilChanged(),
+        tap(() => {
+          this.paginator.pageIndex = 0;
+          this.loadIssuesPage();
+        })
+      ).subscribe();
+
+    merge(this.sort.sortChange, this.paginator.page)
+      .pipe(
+        tap(() => this.loadIssuesPage())
+      )
+      .subscribe();
+
   }
 
   addIssue() {
@@ -51,6 +88,16 @@ export class IssueListingComponent implements OnInit {
       })
       .subscribe(result => console.log(result));
     }, error => this.snackbarService.errorMessage('Failed to load issue'));
+  }
+
+  loadIssuesPage() {
+    this.dataSource.loadIssues(
+      this.input.nativeElement.value,
+      this.sort.direction,
+      this.sort.active,
+      this.paginator.pageIndex,
+      this.paginator.pageSize,
+    );
   }
 
 }

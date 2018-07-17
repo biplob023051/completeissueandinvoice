@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate';
 const Schema = mongoose.Schema;
 const IssueSchema = new Schema({
     title: {
@@ -36,4 +37,5 @@ const IssueSchema = new Schema({
         default: null
     }
 });
+IssueSchema.plugin(mongoosePaginate);
 export default mongoose.model('Issue', IssueSchema);

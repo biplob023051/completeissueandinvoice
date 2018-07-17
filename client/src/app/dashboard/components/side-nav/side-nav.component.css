@@ -10,3 +10,7 @@
 .wrapper {
   margin: 50px;
 }
+
+.cusor-pointer {
+  cursor: pointer;
+}

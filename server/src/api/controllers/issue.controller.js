@@ -5,9 +5,18 @@ import Joi from 'joi';
 
 export default {
     findAll(req, res, next) {
-        Issue.find()
-        .then(issues => {
-            res.json(issues);
+        let query = req.query;
+        let sortObj = {};
+        sortObj[query.sortColumn ? query.sortColumn : 'created'] = query.sortOrder;
+        let options = { page: parseInt(query.pageNumber) + 1, limit: parseInt(query.pageSize), sort: sortObj };
+        let condition = {};
+        if (query.filter) {
+            var re = new RegExp(query.filter, 'i');
+            condition.$or = [{ 'title': { $regex: re }}, { 'description': { $regex: re }}];
+        }
+        Issue.paginate(condition, options)
+        .then(results => {
+            res.json({results: results});
         })
         .catch(err => {
             res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err);
