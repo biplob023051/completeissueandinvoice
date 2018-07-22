@@ -1,6 +1,7 @@
 import express from 'express';
 import invoiceController from '../api/controllers/invoice.controller';
 import issueController from '../api/controllers/issue.controller';
+import uploadController from '../api/controllers/upload.controller';
 
 export const router = express.Router();
 
@@ -17,3 +18,7 @@ router.post('/issues', issueController.create);
 router.get('/issues/:id', issueController.findOne);
 router.delete('/issues/:id', issueController.delete);
 router.put('/issues/:id', issueController.update);
+
+// Issue Photo routes
+router.get('/issues/photos/:photo', uploadController.getPhoto);
+router.post('/issues/photos', uploadController.uploadFile);

@@ -9,7 +9,7 @@
     </mat-form-field>
     <mat-form-field>
       <textarea matInput placeholder="Description" formControlName="description"></textarea>
-      <mat-error *ngIf="issueForm.controls['description'].invalid && issueForm.controls['description'].touched">Responsible is required</mat-error>
+      <mat-error *ngIf="issueForm.controls['description'].invalid && issueForm.controls['description'].touched">Description is required</mat-error>
     </mat-form-field>
     <mat-form-field>
       <mat-select placeholder="Severity" formControlName="severity">
@@ -35,7 +35,90 @@
       <mat-datepicker-toggle matSuffix [for]="deadline"></mat-datepicker-toggle>
       <mat-datepicker #deadline></mat-datepicker>
     </mat-form-field>
-    <div>
+    <div ng2FileDrop
+        [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+        (fileOver)="fileOverBase($event)"
+        [uploader]="uploader"
+        class="well my-drop-zone">
+        <input type="file" ng2FileSelect [uploader]="uploader" multiple />
+        <h3 class="drop-here">Drop files/photos here</h3>
+    </div>
+
+
+
+    <div *ngIf="uploader.queue.length">
+
+      <h3>Upload queue</h3>
+      <p>Queue length: {{ uploader?.queue?.length }}</p>
+
+      <table class="table">
+          <thead>
+          <tr>
+              <th width="50%">Name</th>
+              <th>Size</th>
+              <th>Progress</th>
+              <th>Status</th>
+              <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of uploader.queue">
+              <td><strong>{{ item?.file?.name }}</strong></td>
+              <td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+              <td *ngIf="uploader.options.isHTML5">
+                  <div class="progress" style="margin-bottom: 0;">
+                      <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
+                  </div>
+              </td>
+              <td class="text-center">
+                  <span *ngIf="item.isSuccess" color="accent"><mat-icon>done</mat-icon></span>
+                  <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                  <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+              </td>
+              <td nowrap>
+                  <button type="button" mat-raised-button color="accent" class="mat-raised-button mat-accent"
+                          (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                      <span class="glyphicon glyphicon-upload"></span> Upload
+                  </button>
+                  <button type="button" mat-raised-button color="warn" class="mat-raised-button mat-warn"
+                          (click)="item.cancel()" [disabled]="!item.isUploading">
+                      <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                  </button>
+                  <button type="button" mat-raised-button color="warn" class="mat-raised-button mat-warn"
+                          (click)="item.remove()">
+                      <span class="glyphicon glyphicon-trash"></span> Remove
+                  </button>
+              </td>
+          </tr>
+          </tbody>
+      </table>
+
+      <div>
+          <div>
+              Queue progress:
+              <div class="progress">
+                  <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+              </div>
+          </div>
+          <button type="button" mat-raised-button color="accent" class="mat-raised-button mat-accent"
+                  (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+              <span class="glyphicon glyphicon-upload"></span> Upload all
+          </button>
+          <button type="button" mat-raised-button color="warn" class="mat-raised-button mat-warn"
+                  (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
+              <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
+          </button>
+          <button type="button" mat-raised-button color="warn" class="mat-raised-button mat-warn"
+                  (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
+              <span class="glyphicon glyphicon-trash"></span> Remove all
+          </button>
+      </div>
+
+    </div>
+
+
+
+    <div class="mt-10">
       <button mat-raised-button [disabled]="!issueForm.valid" color="accent" type="submit">Save</button>
       <button mat-raised-button type="reset">Reset</button>
     </div>

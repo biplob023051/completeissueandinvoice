@@ -1,7 +1,9 @@
 import HttpStatus from 'http-status-codes';
 import Issue from '../models/issue.model';
 import Joi from 'joi';
-
+import fs from 'fs';
+// import thumb from 'node-thumbnail';
+const thumb = require('node-thumbnail').thumb;
 
 export default {
     findAll(req, res, next) {
@@ -30,6 +32,7 @@ export default {
             severity: Joi.string().required(),
             status: Joi.string().optional(),
             deadline: Joi.date().optional(),
+            photos: Joi.string().optional(),
             createdBy: Joi.string().required(),
             created: Joi.date().optional(),
             modified: Joi.date().optional()
@@ -39,7 +42,30 @@ export default {
             return res.status(HttpStatus.BAD_REQUEST).json(error);
         }
         Issue.create(value)
-        .then(issue => res.json(issue))
+        .then(issue => {
+            if (req.body.photos) {
+                const photos = JSON.parse(req.body.photos);
+                photos.forEach(function(photo, index, arr) {
+                    fs.rename('./tmp/uploads/' + photo, './uploads/photos/' + photo, (err) => {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            // Generate thumbnail
+                            thumb({
+                                source: './uploads/photos/' + photo,
+                                destination: './uploads/photos',
+                                width: 200
+                            }).then(function() {
+                                console.log('Success');
+                            }).catch(function(e) {
+                                console.log('Error', e.toString());
+                            });
+                        }
+                    });
+                 })    
+            }
+            res.json(issue);
+        })
         .catch(err => res.status(INTERNAL_SERVER_ERROR).json(err));
     },
     findOne(req, res, next) {

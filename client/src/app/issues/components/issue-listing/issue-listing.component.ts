@@ -82,8 +82,8 @@ export class IssueListingComponent implements OnInit, AfterViewInit {
       this.modalService
       .invoke(IssueViewModalComponent,
       {
-        width: '800px',
-        height: '500px',
+        width: '1200px',
+        height: '600px',
         data: issue
       })
       .subscribe(result => console.log(result));

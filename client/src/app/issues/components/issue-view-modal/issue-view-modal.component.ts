@@ -10,9 +10,14 @@ import { Issue } from '../../models/issue';
 export class IssueViewModalComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public issue: Issue) { }
-  displayedColumns = ['title', 'description'];
-  dataSource = this.issue;
+  viewIssue: Issue;
+  photos = [];
+  PHOTO_URL = 'http://localhost:3000/api/issues/photos/';
   ngOnInit() {
+    this.viewIssue = this.issue;
+    if (this.viewIssue.photos) {
+      this.photos = JSON.parse(this.viewIssue.photos);
+    }
   }
 
 }

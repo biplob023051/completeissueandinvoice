@@ -6,38 +6,55 @@
   <h3 class="text-center">Issue Details</h3>
   <div class="mat-row">
     <div class="mat-cell font-bold">Title</div>
-    <div class="mat-cell">{{ issue.title }}</div>
+    <div class="mat-cell">{{ viewIssue.title }}</div>
   </div>
   <div class="mat-row">
     <div class="mat-cell font-bold">Description</div>
-    <div class="mat-cell">{{ issue.description }}</div>
+    <div class="mat-cell">{{ viewIssue.description }}</div>
   </div>
   <div class="mat-row">
     <div class="mat-cell font-bold">Responsible</div>
-    <div class="mat-cell">{{ issue.responsible }}</div>
+    <div class="mat-cell">{{ viewIssue.responsible }}</div>
   </div>
   <div class="mat-row">
     <div class="mat-cell font-bold">Status</div>
-    <div class="mat-cell">{{ issue.status }}</div>
+    <div class="mat-cell">{{ viewIssue.status }}</div>
   </div>
   <div class="mat-row">
     <div class="mat-cell font-bold">Severity</div>
-    <div class="mat-cell">{{ issue.severity }}</div>
+    <div class="mat-cell">{{ viewIssue.severity }}</div>
   </div>
   <div class="mat-row">
     <div class="mat-cell font-bold">Deadline</div>
-    <div class="mat-cell">{{ issue.deadline | date }}</div>
+    <div class="mat-cell">{{ viewIssue.deadline | date }}</div>
   </div>
   <div class="mat-row">
     <div class="mat-cell font-bold">Created</div>
-    <div class="mat-cell">{{ issue.created | date }}</div>
+    <div class="mat-cell">{{ viewIssue.created | date }}</div>
   </div>
   <div class="mat-row">
     <div class="mat-cell font-bold">Modified</div>
-    <div class="mat-cell">{{ issue.modified | date }}</div>
+    <div class="mat-cell">{{ viewIssue.modified | date }}</div>
   </div>
   <div class="mat-row">
     <div class="mat-cell font-bold">Created By</div>
-    <div class="mat-cell">{{ issue.createdBy }}</div>
+    <div class="mat-cell">{{ viewIssue.createdBy }}</div>
+  </div>
+  <div class="mat-row" *ngIf="this.photos.length">
+    <mat-card class="example-card" *ngFor="let photo of photos">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title></mat-card-title>
+      </mat-card-header>
+      <img mat-card-image src="{{PHOTO_URL}}{{ photo }}" alt="Photo of a Shiba Inu">
+      <mat-card-content>
+        <p>
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button></button>
+        <button mat-button></button>
+      </mat-card-actions>
+    </mat-card>
   </div>
 </div>

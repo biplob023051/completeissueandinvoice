@@ -2,11 +2,27 @@
   display: flex;
   flex-direction: column;
 }
-
 .form-container > * {
   width: 100%;
 }
-
 .mat-card {
   width: 80%;
+}
+.my-drop-zone { border: dotted 3px lightgray; padding: 0; text-align: center; }
+.nv-file-over { border: dotted 3px red; } /* Default class applied to drop zones on over */
+.another-file-over-class { border: dotted 3px green; }
+.drop-here {
+  margin-top: -20px;
+  color: #ff4081;
+}
+table {
+  width: 100%;
+}
+.mt-10 {
+  margin-top: 10px;
+}
+input[type='file'] {
+  width:100%;
+  height:120px;
+  opacity:0
 }

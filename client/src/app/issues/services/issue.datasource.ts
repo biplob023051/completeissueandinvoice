@@ -35,7 +35,6 @@ export class IssueDataSource implements DataSource<Issue> {
   }
 
   connect(collectionViewer: CollectionViewer): Observable<Issue[]> {
-    console.log(collectionViewer);
     return this.issuesSubject.asObservable();
   }
 

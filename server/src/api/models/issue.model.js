@@ -21,6 +21,9 @@ const IssueSchema = new Schema({
         type: String,
         default: 'Open'
     },
+    photos: {
+        type: String,
+    },
     deadline: {
         type: Date,
     },

@@ -6,6 +6,7 @@ export class Issue {
   severity: string;
   status: string;
   deadline: Date;
+  photos: string;
   createdBy: string;
   created: Date;
   modified: Date;
